@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Message;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,8 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        
         User::factory()->createMany([
             [
                 'name' => 'Test User',
@@ -27,7 +27,13 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => 'Test User 3',
                 'email' => 'test3@example.com',
-            ]
-        ]);
-    }
+                ]
+            ]);
+            
+            User::factory(10)->create()->each(function ($user) {
+                $user->messages()->createMany(
+                    Message::factory(3)->make()->toArray()
+                );
+            });
+        }
 }
